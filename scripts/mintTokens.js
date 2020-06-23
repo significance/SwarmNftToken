@@ -24,6 +24,8 @@ const dataJson = [
     }
 ]
 
+
+
 module.exports = async function (callback) {
     console.log('Minting started');
     let SwarmNFTInstance = await SwarmNFT.deployed();
