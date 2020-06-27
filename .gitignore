@@ -1,3 +1,6 @@
 .secret
+.mainnetSecret
 ./node_modules/
-./  build/
+./build/
+/node_modules
+/build

@@ -23,6 +23,7 @@ const HDWalletProvider = require('@truffle/hdwallet-provider');
 //
 const fs = require('fs');
 const mnemonic = fs.readFileSync(".secret").toString().trim();
+const mnemonicMainnet = fs.readFileSync(".mainnetSecret").toString().trim();
 
 module.exports = {
   /**
@@ -51,6 +52,13 @@ module.exports = {
     goerli: {
       provider: () => new HDWalletProvider(mnemonic, `http://goerli-geth.dappnode:8545`),
       network_id: "*",       // Any network (default: none)
+    },
+
+    mainnet: {
+      provider: () => new HDWalletProvider(mnemonic, `https://mainnet.infura.io/v3/46958faea5154db687257f9598b0e269`),
+      network_id: "*",       // Any network (default: none)
+      gas: 2600000,           // Gas sent with each transaction (default: ~6700000)
+      gasPrice: 21000000000,  // 20 gwei (in wei) (default: 100 gwei)
     },
 
     // Another network with more advanced options...
