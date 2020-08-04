@@ -1,0 +1,19 @@
+install
+
+1. required dependencies, node, truffle
+2. provide credentials in .secret, .mainnetsecret
+
+test
+
+1. run ganache-cli
+2. truffle test
+
+deploy
+
+1. truffle migrate
+
+0.0518608
+
+mint
+
+1. truffle exec scripts/mintTokens.js

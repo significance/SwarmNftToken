@@ -1,6 +1,5 @@
 .secret
 .mainnetSecret
-./node_modules/
-./build/
-/node_modules
-/build
+node_modules
+build
+package-lock.json
