@@ -9,7 +9,11 @@
   "dependencies": {},
   "devDependencies": {
     "@openzeppelin/contracts": "^3.1.0",
-    "@truffle/hdwallet-provider": "^1.0.39"
+    "@truffle/hdwallet-provider": "^1.0.39",
+    "axios": "^0.19.2",
+    "moment": "^2.27.0",
+    "moment-timezone": "^0.5.31",
+    "mustache": "^4.0.1"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

@@ -1,19 +1,22 @@
-const SwarmNFT = artifacts.require("SwarmNFT");
+const SwarmAlphaNFT = artifacts.require("SwarmAlphaNFT");
 
-contract("SwarmNFT", accounts => {
+contract("SwarmAlphaNFT", accounts => {
 
-    let SwarmNFTInstance;
+    let SwarmAlphaNFTInstance;
 
     // check if the token exists
-    it('Should be named SwarmNFT with shortname P***', async () => {
+    it('Should be SwarmNFT with shortname SwarmAlphaNFT', async () => {
         SwarmNFTInstance = await SwarmNFT.deployed();
         let result = await SwarmNFTInstance.symbol.call();
-        assert.equal(result, 'P***');
+        assert.equal(result, 'SWA');
+        let result = await SwarmNFTInstance.name.call();
+        assert.equal(result, 'Swarm Love');
+
     });
 
     // mint some tokens and send them
-    it('Should mint P*** tokens and send them', async () => {
-        let result = await SwarmNFTInstance.mintToken(accounts[1], 123456, 'This token is a digital certificate for the Swarm badge, Peace limited series.');
+    it('Should mint SWT tokens and send them', async () => {
+        let result = await SwarmNFTInstance.mintToken(accounts[1], 123456, 'bzz://');
     });
 
     it('Should have been received', async () => {

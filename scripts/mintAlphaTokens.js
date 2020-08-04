@@ -1,6 +1,5 @@
-const SwarmNFT = artifacts.require("SwarmNFT");
+const SwarmAlphaNFT = artifacts.require("SwarmAlphaNFT");
 
-const textString = 'This token is a digital certificate for the Swarm badge, Peace limited series.';
 const dataJson = [
     { badge: 41, address: '0xa7bEFD50f0acf8dDE32DC3Ed7484b69516dCf1de' },
     { badge: 43, address: '0xaE72f891Fc9914b13a90cbED799ee73359077bee' },
@@ -103,15 +102,16 @@ const dataJson = [
 
 module.exports = async function (callback) {
     console.log('Minting started');
-    let SwarmNFTInstance = await SwarmNFT.deployed();
+    let SwarmAlphaNFTInstance = await SwarmAlphaNFT.deployed();
     console.log('should be deployed');
 
     try {
         for (const item of dataJson) {
             try {
-                await SwarmNFTInstance.mintToken(item.address, item.badge, textString);
+                const uri = '';
+                await SwarmAlphaNFTInstance.mintToken(item.address, item.badge, uri);
                 console.log(item.badge, 'has been minted for', item.address);
-                let res = await SwarmNFTInstance.balanceOf(item.address);
+                let res = await SwarmAlphaNFTInstance.balanceOf(item.address);
                 console.log('NFT P*** Balance for ', item.address, ': ', res.toNumber());
             } catch (error) {
                 console.log(item.badge, 'error', item.address);
