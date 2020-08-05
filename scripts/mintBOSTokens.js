@@ -3,6 +3,8 @@ const SwarmBOSNFT = artifacts.require("SwarmBOSNFT");
 const Mustache = require('mustache');
 const fs = require('fs');
 const moment = require('moment-timezone');
+const FormData = require('form-data');
+
 const axios = require('axios');
 
 const template = fs.readFileSync('../token-files/bos.txt', {encoding: 'utf8'});
@@ -26,7 +28,11 @@ let mintArtifact = (address, tokenID) => {
 		  tokenID: tokenID
 		};
 
+		const filename = 'peace-'+tokenID+'.nfo';
+
 		const output = Mustache.render(template, view);
+
+		fs.writeFileSync('./artifacts/'+filename, output)
 
 	    const config = {
 	    	headers: {
@@ -40,8 +46,18 @@ let mintArtifact = (address, tokenID) => {
 	    rl.question("Create Swarm Artifact? y/n ", (answer) => {
 	    	if(answer === 'y'){
 	    		console.log('sending request to gateway...')
-				return axios.post("https://gateway.ethswarm.org/files", output, config)
-				.then((response)=>{
+
+				const formData = new FormData();
+				formData.append(filename, fs.readFileSync('./artifacts/'+filename));
+				console.log(formData)
+				axios({
+				  url: 'https://gateway.ethswarm.org/files?name='+filename,
+				  method: 'POST',
+				  data: formData,
+				  headers: {
+				    ...formData.getHeaders()
+				  },
+				}).then((response)=>{
 					console.log('created, reference:', response.data.reference);
 					resolve(response.data.reference);
 				}).catch((error)=>{
@@ -84,7 +100,7 @@ module.exports = async (callback) => {
 		try{
 			reference = await mintArtifact(address, tokenID);
 		}catch(error){
-			console.log('error creating artifact', address, tokenID);
+			console.log('error creating artifact', address, tokenID, error);
 		}
 
 		try{
@@ -99,7 +115,3 @@ module.exports = async (callback) => {
 	callback();
 
 }
-
-//todo
-
-//uri - what should it be - javascript?? images?? web2, web3?

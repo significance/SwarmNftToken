@@ -1,3 +1,6 @@
+//convert ens to addresses
+
+
 const SwarmAlphaNFT = artifacts.require("SwarmAlphaNFT");
 
 const dataJson = [
