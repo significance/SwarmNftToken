@@ -17,6 +17,8 @@ const rl = readline.createInterface({
     output: process.stdout
 });
 
+var totalGas = 0;
+
 let mintArtifact = (address, tokenID) => {
 	return new Promise((resolve, reject) => {
 
@@ -43,13 +45,12 @@ let mintArtifact = (address, tokenID) => {
 
 	    console.log('\n' + output + '\n' + '\n');
 
-	    rl.question("Create Swarm Artifact? y/n ", (answer) => {
-	    	if(answer === 'y'){
+	    // rl.question("Create Swarm Artifact? y/n ", (answer) => {
+	    // 	if(answer === 'y'){
 	    		console.log('sending request to gateway...')
 
 				const formData = new FormData();
 				formData.append(filename, fs.readFileSync('./artifacts/'+filename));
-				console.log(formData)
 				axios({
 				  url: 'https://gateway.ethswarm.org/files?name='+filename,
 				  method: 'POST',
@@ -64,11 +65,11 @@ let mintArtifact = (address, tokenID) => {
 	    			console.log('error minting:', address, id);
 	    			reject(error);
 				});
-	    	}else{
-	    		console.log('did not mint');
-	    		return false;
-	    	}
-	    });
+	    	// }else{
+	    	// 	console.log('did not mint');
+	    	// 	return false;
+	    	// }
+	    // });
 	});
 };
 
@@ -76,8 +77,10 @@ let mintToken = async (address, tokenID, reference) => {
 	let SwarmBOSNFTInstance = await SwarmBOSNFT.deployed();
     try {
         const uri = 'bzz/' + reference;
-        await SwarmBOSNFTInstance.mintToken(address, tokenID, uri);
+        let tx = await SwarmBOSNFTInstance.mintToken(address, tokenID, uri);
         console.log(tokenID, 'has been minted for', address);
+        console.log(tx.receipt.gasUsed);
+        totalGas = totalGas + tx.receipt.gasUsed;
         let res = await SwarmBOSNFTInstance.balanceOf(address);
         console.log('NFT BOS Balance for ', address, ': ', res.toNumber());
     } catch (error) {
@@ -87,7 +90,6 @@ let mintToken = async (address, tokenID, reference) => {
 }
 
 module.exports = async (callback) => {
-
 
 	for (var i = 0; i < input.addresses.length; i++) {
 
@@ -111,6 +113,8 @@ module.exports = async (callback) => {
 		}
 
 	}
+
+	console.log('total gas:', totalGas);
 
 	callback();
 
