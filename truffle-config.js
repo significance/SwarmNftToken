@@ -19,15 +19,19 @@
  */
 
 const HDWalletProvider = require('@truffle/hdwallet-provider');
+const PrivateKeyProvider = require("truffle-privatekey-provider");
 // const infuraKey = "fj4jll3k.....";
 //
 const fs = require('fs');
 try {
-  const mnemonic = fs.readFileSync(".secret").toString().trim();
-  const mnemonicMainnet = fs.readFileSync(".mainnetSecret").toString().trim();
+  var mnemonic = fs.readFileSync(".secret").toString().trim();
+  var mnemonicMainnet = fs.readFileSync(".mainnetSecret").toString().trim();
+  var noordungSecret = fs.readFileSync(".noordungSecret").toString().trim();
 }catch(e){
   console.error('please provide credentials, see readme')
 }
+
+console.error(noordungSecret)
 
 module.exports = {
   /**
@@ -53,13 +57,18 @@ module.exports = {
       network_id: "*",       // Any network (default: none)
     },
 
+    noordung: {
+      provider: () => { return new PrivateKeyProvider(noordungSecret, "https://geth-noordung.fairdatasociety.org") },
+      network_id: 235813
+    },
+
     goerli: {
       provider: () => new HDWalletProvider(mnemonic, `http://goerli-geth.dappnode:8545`),
       network_id: "*",       // Any network (default: none)
     },
 
     mainnet: {
-      provider: () => new HDWalletProvider(mnemonic, `https://mainnet.infura.io/v3/46958faea5154db687257f9598b0e269`),
+      provider: () => new HDWalletProvider(mnemonicMainnet, `https://mainnet.infura.io/v3/46958faea5154db687257f9598b0e269`),
       network_id: "*",       // Any network (default: none)
       gas: 2600000,           // Gas sent with each transaction (default: ~6700000)
       gasPrice: 21000000000,  // 20 gwei (in wei) (default: 100 gwei)
